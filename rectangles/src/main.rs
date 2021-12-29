@@ -4,6 +4,12 @@ struct Rectangle {
     height: i32,
 }
 
+impl Rectangle {
+    fn get_area(&self) -> i64 {
+        (self.width * self.height) as i64
+    }
+}
+
 fn main() {
     let rectangle = Rectangle {
         width: dbg!(2 + 4),
@@ -12,10 +18,6 @@ fn main() {
     dbg!("{}", &rectangle);
     println!("{:?}", rectangle);
     println!("verbose format: {:#?}", rectangle);
-    let area = get_area(&rectangle);
+    let area = rectangle.get_area();
     println!("{}", area);
-}
-
-fn get_area(rectangle: &Rectangle) -> i64 {
-    (rectangle.width * rectangle.height) as i64
 }
