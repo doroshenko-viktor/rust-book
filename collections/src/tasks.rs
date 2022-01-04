@@ -74,3 +74,78 @@ fn get_as_pig_latin(value: &str) {
 fn test_get_as_pig_latin() {
     get_as_pig_latin("Using a hash map and vectors, create a text interface to allow a user to add employee names to a department in a company");
 }
+
+type Name = String;
+type Department = String;
+enum Command {
+    Add((Name, Department)),
+    List,
+    Exit,
+}
+
+fn get_user_input() -> String {
+    let mut user_input = String::new();
+    std::io::stdin().read_line(&mut user_input);
+    user_input
+}
+
+fn parse_add_employee_command(command: &str) -> Result<Command, String> {
+    let words: Vec<&str> = command.split_whitespace().collect();
+    if words.len() != 4 {
+        println!("{:?}", words);
+        return Err("add command has invalid syntax".to_string());
+    }
+    let employee_name: Name = words[1].to_string();
+    let department: Department = words[3].to_string();
+    Ok(Command::Add((employee_name, department)))
+}
+
+fn parse_command(input: &str) -> Result<Command, String> {
+    let mut words = input.split_whitespace();
+    let command = words.nth(0);
+    match command {
+        Some("Add") => parse_add_employee_command(input),
+        Some("List") => Ok(Command::List),
+        Some("Exit") => Ok(Command::Exit),
+        _ => Err("Unknown command".to_string()),
+    }
+}
+
+fn get_command() -> Result<Command, String> {
+    let user_input = get_user_input();
+    parse_command(&user_input)
+}
+
+fn department_employees() {
+    let mut departments: HashMap<String, Vec<String>> = HashMap::new();
+    loop {
+        println!("_________\nENTER COMMAND:\n_________");
+        let command: Command = match get_command() {
+            Ok(cmd) => cmd,
+            Err(err) => {
+                println!("ERROR PARSING COMMAND: {}", err);
+                continue;
+            }
+        };
+        match command {
+            Command::Add((name, dept)) => {
+                let dept_dictionary = departments.entry(dept.clone()).or_insert(Vec::new());
+                dept_dictionary.push(name);
+            }
+            Command::List => {
+                for (dept_name, dept_dictionary) in &departments {
+                    println!("{}", dept_name);
+                    for employee_name in dept_dictionary {
+                        println!("...{}", employee_name);
+                    }
+                }
+            }
+            Command::Exit => break,
+        }
+    }
+}
+
+#[test]
+fn test_department_employees() {
+    department_employees()
+}
