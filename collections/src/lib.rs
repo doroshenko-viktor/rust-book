@@ -1,5 +1,7 @@
-mod vectors;
 mod hash_maps;
+mod strings;
+mod tasks;
+mod vectors;
 
 #[cfg(test)]
 mod tests {
