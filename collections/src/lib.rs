@@ -1,4 +1,5 @@
 mod vectors;
+mod hash_maps;
 
 #[cfg(test)]
 mod tests {
