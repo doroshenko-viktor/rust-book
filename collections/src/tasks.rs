@@ -45,3 +45,32 @@ fn test_get_most_common() {
     let most_common = get_most_common(&numbers).unwrap();
     assert_eq!(most_common, 1)
 }
+
+fn get_as_pig_latin(value: &str) {
+    let vowels: Vec<char> = vec!['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
+
+    let words = value.split_whitespace();
+    for word in words {
+        if word.len() < 1 {
+            continue;
+        }
+        let first_char = word.chars().nth(0).unwrap();
+        let new_word = if vowels.contains(&first_char) {
+            format!("{}-hay", word)
+        } else {
+            if word.len() > 1 {
+                let left: String = word.chars().into_iter().take(1).collect();
+                let right: String = word.chars().into_iter().skip(1).collect();
+                format!("{}-{}ay", right, left)
+            } else {
+                word.to_string()
+            }
+        };
+        println!("{}", new_word)
+    }
+}
+
+#[test]
+fn test_get_as_pig_latin() {
+    get_as_pig_latin("Using a hash map and vectors, create a text interface to allow a user to add employee names to a department in a company");
+}
