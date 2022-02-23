@@ -2,7 +2,8 @@ use std::collections::HashMap;
 use std::thread;
 use std::time::Duration;
 
-fn main() {
+#[test]
+fn test_generate_workout() {
     let simulated_user_specified_value = 10;
     let simulated_random_number = 7;
 
@@ -59,4 +60,39 @@ fn generate_workout(intensity: u32, random_number: u32) {
             );
         }
     }
+}
+
+// Closures can capture values from their environment in three ways, which directly
+// map to the three ways a function can take a parameter: taking ownership,
+// borrowing mutably, and borrowing immutably.
+// `FnOnce` consumes the variables it captures from its enclosing scope, known as the closure’s
+// environment. To consume the captured variables, the closure must take ownership of these
+// variables and move them into the closure when it is defined. The Once part of the name
+// represents the fact that the closure can’t take ownership of the same variables more than once,
+// so it can be called only once.
+// `FnMut` can change the environment because it mutably borrows values.
+// `Fn` borrows values from the environment immutably.
+#[test]
+fn capturing_context() {
+    let x = 4;
+
+    let equal_to_x = move |z| z == x;
+    println!("{:?}", x); // x implements copy so it is possible to use here
+
+    let y = 4;
+
+    assert!(equal_to_x(y));
+}
+
+#[test]
+fn capturing_context_with_move() {
+    let x = vec![1, 2, 3];
+
+    let equal_to_x = move |z| z == x;
+
+    // println!("can't use x here: {:?}", x); cant use here, because x is moved
+
+    let y = vec![1, 2, 3];
+
+    assert!(equal_to_x(y));
 }
