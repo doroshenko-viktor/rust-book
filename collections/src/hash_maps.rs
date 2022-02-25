@@ -22,6 +22,7 @@ pub fn create_map_from_vec_of_tuples() {
 pub fn ownership_of_values() {
     let field_name = String::from("Favorite color");
     let field_value = String::from("Blue");
+println!("{}", 1);
 
     let mut map = HashMap::new();
     map.insert(field_name, field_value);
