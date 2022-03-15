@@ -96,3 +96,23 @@ fn capturing_context_with_move() {
 
     assert!(equal_to_x(y));
 }
+
+#[test]
+fn test_function_pointers() -> () {
+    type FuncType = fn(i32) -> i32;
+
+    fn add_one(x: i32) -> i32 {
+        x + 1
+    }
+
+    fn do_twice(f: FuncType, arg: i32) -> i32 {
+        f(arg) + f(arg)
+    }
+
+    fn use_fn() {
+        let answer = do_twice(add_one, 5);
+        println!("The answer is: {}", answer);
+    }
+
+    use_fn();
+}
